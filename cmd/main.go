@@ -4,9 +4,21 @@ import (
     "app"
     "app/service/postgres"
     "fmt"
+    "github.com/joho/godotenv"
+    "log"
 )
 
 func main() {
+
+    // env
+    err := godotenv.Load("../.env.local")
+    if err != nil {
+        err = godotenv.Load("../.env")
+        if err != nil {
+            log.Fatal(err)
+        }
+    }
+
     // read from database
     s := postgres.UserService{}
     u, _ := s.User(1111)
