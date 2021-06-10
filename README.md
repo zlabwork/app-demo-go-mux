@@ -10,7 +10,9 @@
 | --- | --- |
 | [github.com/gorilla/mux](https://github.com/gorilla/mux) | web 框架 |
 | [github.com/gin-gonic/gin](https://github.com/gin-gonic/gin) | web 框架 |
-| [github.com/joho/godotenv](https://github.com/joho/godotenv) | 配置, 环境变量 |
+| [github.com/joho/godotenv](https://github.com/joho/godotenv) | 配置, env 环境变量 |
+| [gopkg.in/yaml.v2](https://gopkg.in/yaml.v2) | 配置, yaml |
+| [github.com/spf13/viper](https://github.com/spf13/viper) | 配置, 支持多种格式 |
 | [github.com/go-sql-driver/mysql](https://github.com/go-sql-driver/mysql) | 数据库驱动, MySQL |
 | [go.mongodb.org/mongo-driver](https://go.mongodb.org/mongo-driver) | 数据库驱动, mongoDB |
 | [github.com/gomodule/redigo](https://github.com/gomodule/redigo) | 数据库驱动, redis |
@@ -32,8 +34,12 @@
 | [Jaeger](https://www.jaegertracing.io/)   | 链路追踪 |
 
 
+## 工具
+https://mholt.github.io/json-to-go/
+
+
 ## 参考文档
+https://github.com/avelino/awesome-go  
 https://zhuanlan.zhihu.com/p/39326315  
 https://medium.com/@benbjohnson/standard-package-layout-7cdbc8391fc1  
 https://studygolang.com/articles/17467?fr=sidebar 
-
