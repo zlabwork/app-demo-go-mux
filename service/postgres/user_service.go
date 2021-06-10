@@ -1,7 +1,7 @@
 package postgres
 
 import (
-    "app/service"
+    "app"
     "database/sql"
 )
 
@@ -9,15 +9,15 @@ type UserService struct {
     Db *sql.DB
 }
 
-func (s *UserService) User(id int64) (*service.User, error) {
-    return &service.User{Id: id}, nil
+func (s *UserService) User(id int64) (*app.User, error) {
+    return &app.User{Id: id}, nil
 }
 
-func (s *UserService) Users() ([]*service.User, error) {
+func (s *UserService) Users() ([]*app.User, error) {
     return nil, nil
 }
 
-func (s *UserService) CreateUser(u *service.User) error {
+func (s *UserService) CreateUser(u *app.User) error {
     return nil
 }
 
