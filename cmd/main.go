@@ -2,7 +2,7 @@ package main
 
 import (
     "app"
-    "app/service/postgres"
+    "app/service/database/postgresql"
     "fmt"
     "github.com/joho/godotenv"
     "log"
@@ -20,7 +20,7 @@ func main() {
     }
 
     // read from database
-    s := postgres.UserService{}
+    s := postgresql.UserService{}
     u, _ := s.User(1111)
     fmt.Println(u)
 

@@ -11,11 +11,13 @@
 | [github.com/gorilla/mux](https://github.com/gorilla/mux) | web 框架 |
 | [github.com/gin-gonic/gin](https://github.com/gin-gonic/gin) | web 框架 |
 | [github.com/joho/godotenv](https://github.com/joho/godotenv) | 配置, env 环境变量 |
-| [gopkg.in/yaml.v2](https://gopkg.in/yaml.v2) | 配置, yaml |
+| [gopkg.in/yaml.v3](https://gopkg.in/yaml.v3) | 配置, yaml |
 | [github.com/spf13/viper](https://github.com/spf13/viper) | 配置, 支持多种格式 |
 | [github.com/go-sql-driver/mysql](https://github.com/go-sql-driver/mysql) | 数据库驱动, MySQL |
+| [github.com/gocql/gocql](https://github.com/gocql/gocql) | 数据库驱动, Cassandra |
 | [go.mongodb.org/mongo-driver](https://go.mongodb.org/mongo-driver) | 数据库驱动, mongoDB |
-| [github.com/gomodule/redigo](https://github.com/gomodule/redigo) | 数据库驱动, redis |
+| [github.com/go-redis/redis](https://github.com/go-redis/redis) | 数据库驱动, redis |
+| [github.com/gomodule/redigo](https://github.com/gomodule/redigo) | 数据库驱动, redis 不推荐 |
 | [github.com/go-resty/resty/](https://github.com/go-resty/resty/) | http 请求客户端 |
 | [github.com/valyala/fastjson](https://github.com/valyala/fastjson) | json 解析 |
 | [github.com/tidwall/gjson](https://github.com/tidwall/gjson) | json 解析, 注意: []强制转为字符串后为[] |
