@@ -6,16 +6,16 @@ import (
 )
 
 type handle struct {
-    Cli *redis.Client
+    Conn *redis.Client
 }
 
 func ConnectRedis(c *configs.RedisConfig) (*handle, error) {
-    rdb := redis.NewClient(&redis.Options{
+    cli := redis.NewClient(&redis.Options{
         Addr:     c.Host + ":" + c.Port,
         Password: c.Pass,
         DB:       c.Name,
     })
     return &handle{
-        Cli: rdb,
+        Conn: cli,
     }, nil
 }

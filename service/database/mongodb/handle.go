@@ -10,7 +10,7 @@ import (
 )
 
 type handle struct {
-    Cli      *mongo.Client
+    Conn     *mongo.Client
     Database *mongo.Database
 }
 
@@ -30,7 +30,7 @@ func ConnectMongodb(c *configs.MongoConfig) (*handle, error) {
     }
 
     return &handle{
-        Cli:      cli,
+        Conn:     cli,
         Database: cli.Database(c.Name),
     }, nil
 }
