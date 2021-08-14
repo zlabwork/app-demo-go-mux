@@ -1,0 +1,11 @@
+# configs/app.yaml
+
+db:
+    mysql:
+        host: 127.0.0.1
+        port: 3306
+        user:
+        pass:
+    redis:
+        host: 127.0.0.1
+        port: 6379

@@ -1,7 +1,7 @@
 package mongodb
 
 import (
-    "app/configs"
+    "app"
     "context"
     "fmt"
     "go.mongodb.org/mongo-driver/mongo"
@@ -16,8 +16,8 @@ type handle struct {
 
 // mongodb://127.0.0.1:27017
 // mongodb://foo:bar@localhost:27017
-func ConnectMongodb(c *configs.MongoConfig) (*handle, error) {
-    dsn := fmt.Sprintf("mongodb://%s:%s", c.Host, c.Port)
+func ConnectMongodb(c *app.Yaml) (*handle, error) {
+    dsn := fmt.Sprintf("mongodb://%s:%s", c.Db.MongoDb.Host, c.Db.MongoDb.Port)
     ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
     opts := options.Client().ApplyURI(dsn)
     cli, err := mongo.Connect(ctx, opts)
@@ -31,6 +31,6 @@ func ConnectMongodb(c *configs.MongoConfig) (*handle, error) {
 
     return &handle{
         Conn:     cli,
-        Database: cli.Database(c.Name),
+        Database: cli.Database(c.Db.MongoDb.Name),
     }, nil
 }
