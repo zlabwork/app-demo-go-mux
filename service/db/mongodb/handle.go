@@ -14,6 +14,7 @@ type handle struct {
     Database *mongo.Database
 }
 
+// ConnectMongodb
 // mongodb://127.0.0.1:27017
 // mongodb://foo:bar@localhost:27017
 func ConnectMongodb(c *app.Yaml) (*handle, error) {
