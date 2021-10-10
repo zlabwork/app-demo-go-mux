@@ -1,4 +1,4 @@
-# configs/app.yaml
+# config/app.yaml
 
 db:
     mysql:

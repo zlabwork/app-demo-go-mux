@@ -40,4 +40,4 @@ go.sum
 Thumbs.db
 
 ### Project ###
-configs/
+config/

@@ -23,13 +23,13 @@ func main() {
         log.Fatal(err)
     }
     // app.yaml
-    bs, err := ioutil.ReadFile("configs/app.yaml")
+    bs, err := ioutil.ReadFile("config/app.yaml")
     err = yaml.Unmarshal(bs, &app.Cfg)
     if err != nil {
         log.Fatalf("error: %v", err)
     }
 
-    // configs & router
+    // config & router
     var wait time.Duration
     var dir string
     flag.DurationVar(&wait, "graceful-timeout", time.Second*15, "the duration for which the server gracefully wait for existing connections to finish - e.g. 15s or 1m")
