@@ -11,7 +11,7 @@ type handle struct {
 
 func ConnectRedis(c *app.Yaml) (*handle, error) {
 	cli := redis.NewClient(&redis.Options{
-		Addr: c.Db.Redis.Host + ":" + c.Db.Redis.Port,
+		Addr: c.Redis.Host + ":" + c.Redis.Port,
 		// Password: "",
 		// DB:       1,
 	})

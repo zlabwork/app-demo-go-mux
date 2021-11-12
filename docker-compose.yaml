@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  drive:
+    image: 'golang:1.17.3-buster'
+    restart: always
+    container_name: drive
+    ports:
+      - '${APP_PORT}:${APP_PORT}'
+    volumes:
+      - .:/app
+      - ${GOPATH}/pkg/mod:/go/pkg/mod
+    command:
+      - /bin/bash
+      - -c
+      - |
+        go env -w GO111MODULE=on
+        go env -w GOPROXY=https://goproxy.io,direct
+        cd /app/cmd
+        go mod tidy
+        go run main.go
+        # go build -o application
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    name: appnet
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/16

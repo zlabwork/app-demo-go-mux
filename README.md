@@ -25,6 +25,7 @@ b, _ := ioutil.ReadAll(reader)
 v, _ := url.ParseQuery(string(b))
 ```
 
+
 ## cookie
 ```go
 // 读取 cookie
@@ -77,3 +78,4 @@ https://github.com/avelino/awesome-go
 https://zhuanlan.zhihu.com/p/39326315  
 https://medium.com/@benbjohnson/standard-package-layout-7cdbc8391fc1  
 https://studygolang.com/articles/17467?fr=sidebar 
+

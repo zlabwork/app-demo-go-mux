@@ -10,9 +10,9 @@ type Yaml struct {
 			User string
 			Pass string
 		}
-		Redis struct {
-			Host string
-			Port string
-		}
+	}
+	Redis struct {
+		Host string
+		Port string
 	}
 }
