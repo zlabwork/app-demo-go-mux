@@ -19,7 +19,7 @@ services:
         cd /app/cmd
         go mod tidy
         go run main.go
-        # go build -o application
+        # go build -o /app/bin/application
     networks:
       - appnet
 
