@@ -6,21 +6,21 @@ import (
 )
 
 type UserService struct {
-	Db *sql.DB
+	Conn *sql.DB
 }
 
-func (s *UserService) User(id int64) (*app.User, error) {
-	return &app.User{Id: id}, nil
-}
-
-func (s *UserService) Users() ([]*app.User, error) {
+func (us *UserService) Get(id int64) (*app.User, error) {
 	return nil, nil
 }
 
-func (s *UserService) CreateUser(u *app.User) error {
+func (us *UserService) Delete(id int64) error {
 	return nil
 }
 
-func (s *UserService) DeleteUser(id int64) error {
+func (us *UserService) Create(user *app.User) error {
+	return nil
+}
+
+func (us *UserService) Modify(user *app.User) error {
 	return nil
 }

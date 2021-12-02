@@ -1,27 +1,27 @@
 package app
 
 type UserCache struct {
-	cache   map[int64]*User
-	service UserService
+	cache map[int64]*User
+	srv   UserService
 }
 
 func NewUserCache(service UserService) *UserCache {
 	return &UserCache{
-		cache:   make(map[int64]*User),
-		service: service,
+		cache: make(map[int64]*User),
+		srv:   service,
 	}
 }
 
-func (c *UserCache) User(id int64) (*User, error) {
-	if u := c.cache[id]; u != nil {
+func (uc *UserCache) Get(id int64) (*User, error) {
+	if u := uc.cache[id]; u != nil {
 		return u, nil
 	}
 
-	u, err := c.service.User(id)
+	user, err := uc.srv.Get(id)
 	if err != nil {
 		return nil, err
-	} else if u != nil {
-		c.cache[id] = u
+	} else if user != nil {
+		uc.cache[id] = user
 	}
-	return u, err
+	return user, err
 }

@@ -25,13 +25,16 @@ func main() {
 		log.Fatalf("error: %v", err)
 	}
 
+	// libs
+	app.Libs = app.NewLibs()
+
 	// read from database
-	s := postgresql.UserService{}
-	u, _ := s.User(1111)
+	us := postgresql.UserService{}
+	u, _ := us.Get(1111)
 	fmt.Println(u)
 
 	// read from cache
-	cache := app.NewUserCache(&s)
-	u, _ = cache.User(2222)
+	uc := app.NewUserCache(&us)
+	u, _ = uc.Get(2222)
 	fmt.Println(u)
 }

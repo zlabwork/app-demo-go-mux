@@ -1,7 +1,6 @@
 package redis
 
 import (
-	"app"
 	"github.com/go-redis/redis/v8"
 )
 
@@ -9,12 +8,15 @@ type handle struct {
 	Conn *redis.Client
 }
 
-func ConnectRedis(c *app.Yaml) (*handle, error) {
-	cli := redis.NewClient(&redis.Options{
-		Addr: c.Redis.Host + ":" + c.Redis.Port,
-		// Password: "",
-		// DB:       1,
-	})
+// ConnectRedis
+// redis://<user>:<pass>@localhost:6379/<db>
+// https://redis.uptrace.dev/guide/server.html#connecting-to-redis-server
+func ConnectRedis(dsn string) (*handle, error) {
+	opt, err := redis.ParseURL(dsn)
+	if err != nil {
+		return nil, err
+	}
+	cli := redis.NewClient(opt)
 	return &handle{
 		Conn: cli,
 	}, nil

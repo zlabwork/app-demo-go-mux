@@ -1,14 +1,19 @@
 package app
 
+import "time"
+
 type User struct {
-	Id   int64
-	Name string
-	Age  int
+	Id     int64
+	Name   string
+	Gender int
+	State  int
+	Ctime  time.Time
+	Mtime  time.Time
 }
 
 type UserService interface {
-	User(id int64) (*User, error)
-	Users() ([]*User, error)
-	CreateUser(u *User) error
-	DeleteUser(id int64) error
+	Get(id int64) (*User, error)
+	Delete(id int64) error
+	Create(user *User) error
+	Modify(user *User) error
 }
