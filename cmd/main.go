@@ -2,7 +2,7 @@ package main
 
 import (
 	"app"
-	"app/service/db/postgresql"
+	"app/service"
 	"fmt"
 	"github.com/joho/godotenv"
 	"gopkg.in/yaml.v2"
@@ -28,13 +28,11 @@ func main() {
 	// libs
 	app.Libs = app.NewLibs()
 
-	// read from database
-	us := postgresql.UserService{}
-	u, _ := us.Get(1111)
-	fmt.Println(u)
+	// banner
+	app.Banner("This is a demo app")
 
-	// read from cache
-	uc := app.NewUserCache(&us)
-	u, _ = uc.Get(2222)
-	fmt.Println(u)
+	// read from database
+	srv, _ := service.NewUserService()
+	user, _ := srv.GetOne(111)
+	fmt.Println(user)
 }
