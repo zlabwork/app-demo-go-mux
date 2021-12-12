@@ -47,6 +47,7 @@ http.SetCookie(w, cookie)
 | [gopkg.in/yaml.v3](https://gopkg.in/yaml.v3) | 配置, yaml |
 | [github.com/spf13/viper](https://github.com/spf13/viper) | 配置, 支持多种格式 |
 | [github.com/go-sql-driver/mysql](https://github.com/go-sql-driver/mysql) | 数据库驱动, MySQL |
+| [github.com/lib/pq](https://github.com/lib/pq) | 数据库驱动, Postgres |
 | [github.com/gocql/gocql](https://github.com/gocql/gocql) | 数据库驱动, Cassandra |
 | [go.mongodb.org/mongo-driver](https://go.mongodb.org/mongo-driver) | 数据库驱动, mongoDB |
 | [github.com/go-redis/redis](https://github.com/go-redis/redis) | 数据库驱动, redis |
