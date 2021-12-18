@@ -67,6 +67,7 @@ http.SetCookie(w, cookie)
 | 技术 | 简介 |
 | --- | --- |
 | [Zipkin](https://zipkin.io/) | 链路追踪 |
+| [skywalking](https://skywalking.apache.org/) | 链路追踪 |
 | [Jaeger](https://www.jaegertracing.io/)   | 链路追踪 |
 
 
@@ -75,6 +76,7 @@ https://mholt.github.io/json-to-go/
 
 
 ## 参考文档
+[Dapper 大规模分布式系统的跟踪系统](https://bigbully.github.io/Dapper-translation/)  
 https://github.com/avelino/awesome-go  
 https://zhuanlan.zhihu.com/p/39326315  
 https://medium.com/@benbjohnson/standard-package-layout-7cdbc8391fc1  
