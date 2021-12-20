@@ -77,6 +77,7 @@ https://mholt.github.io/json-to-go/
 
 ## 参考文档
 [Dapper 大规模分布式系统的跟踪系统](https://bigbully.github.io/Dapper-translation/)  
+[微服务架构](https://www.zhihu.com/question/65502802)  
 https://github.com/avelino/awesome-go  
 https://zhuanlan.zhihu.com/p/39326315  
 https://medium.com/@benbjohnson/standard-package-layout-7cdbc8391fc1  
