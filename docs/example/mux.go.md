@@ -24,7 +24,7 @@ func main() {
     }
     // app.yaml
     bs, err := ioutil.ReadFile("config/app.yaml")
-    err = yaml.Unmarshal(bs, &app.Cfg)
+    err = yaml.Unmarshal(bs, app.Yaml)
     if err != nil {
         log.Fatalf("error: %v", err)
     }
