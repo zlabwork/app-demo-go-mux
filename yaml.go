@@ -1,6 +1,6 @@
 package app
 
-var Cfg = Yaml{}
+var Cfg = &Yaml{}
 
 type Yaml struct {
 	Db struct {
