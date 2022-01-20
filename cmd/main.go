@@ -3,6 +3,7 @@ package main
 import (
 	"app"
 	"app/service"
+	"context"
 	"fmt"
 	"github.com/joho/godotenv"
 	"gopkg.in/yaml.v2"
@@ -32,7 +33,7 @@ func main() {
 	app.Banner("This is a demo app")
 
 	// read from database
-	srv, _ := service.NewUserService()
+	srv, _ := service.NewUserService(context.TODO())
 	user, _ := srv.GetOne(111)
 	fmt.Println(user)
 }
