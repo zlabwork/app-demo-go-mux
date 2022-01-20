@@ -1,18 +1,7 @@
 package app
 
-var Cfg = &Yaml{}
+var Yaml = &yaml{}
 
-type Yaml struct {
-	Db struct {
-		Mysql struct {
-			Host string
-			Port string
-			User string
-			Pass string
-		}
-	}
-	Redis struct {
-		Host string
-		Port string
-	}
+type yaml struct {
+	Access [][]string
 }

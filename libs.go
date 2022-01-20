@@ -1,6 +1,6 @@
 package app
 
-var Libs = &libs{}
+var Libs *libs
 
 type libs struct {
 }
