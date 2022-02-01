@@ -4,11 +4,11 @@ import (
 	"app"
 	"app/service"
 	"context"
-	"fmt"
 	"github.com/joho/godotenv"
+	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
-	"log"
+	"os"
 )
 
 func main() {
@@ -35,5 +35,16 @@ func main() {
 	// read from database
 	srv, _ := service.NewUserService(context.TODO())
 	user, _ := srv.GetOne(111)
-	fmt.Println(user)
+	log.Println(user)
+}
+
+func init() {
+	f, err := os.OpenFile("logs.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		log.SetOutput(os.Stdout)
+	} else {
+		log.SetOutput(f)
+	}
+	// log.SetFormatter(&log.JSONFormatter{})
+	log.SetFormatter(&log.TextFormatter{})
 }
