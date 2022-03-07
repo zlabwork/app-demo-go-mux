@@ -7,7 +7,7 @@ import (
 )
 
 func DefaultHandler(w http.ResponseWriter, r *http.Request) {
-	app.ResponseRaw(w, app.JsonOK{
+	app.ResponseRaw(w, app.JsonData{
 		Code:    msg.OK,
 		Message: msg.Text(msg.OK),
 		Data:    app.VersionName + "@" + app.VersionNumber,

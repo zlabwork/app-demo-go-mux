@@ -32,18 +32,18 @@ func SignatureMiddleware(next http.Handler) http.Handler {
 
 		// 1. Check date time
 		if checkDatetime(r) != nil {
-			app.ResponseCode(w, msg.ErrTimeout)
+			app.ResponseData(w, msg.ErrTimeout, struct {
+				ServerDate string
+			}{ServerDate: time.Now().UTC().Format(dateFormat)})
 			return
 		}
 
 		// 2. Authorization
 		token, err := parseAuthorization(r)
 		if err != nil {
-			app.ResponseRaw(w, app.JsonError{
-				Code:    msg.ErrAccess,
-				Message: msg.Text(msg.ErrAccess) + ", " + err.Error(),
-				Refer:   "",
-			})
+			app.ResponseData(w, msg.ErrAccess, struct {
+				Error string
+			}{Error: err.Error()})
 			return
 		}
 		aks := os.Getenv("AK_" + token.Credential)
@@ -51,11 +51,9 @@ func SignatureMiddleware(next http.Handler) http.Handler {
 		// 3. SignedBody
 		signedBody, err := createSignedBody(r)
 		if err != nil {
-			app.ResponseRaw(w, app.JsonError{
-				Code:    msg.ErrSignature,
-				Message: msg.Text(msg.ErrSignature) + ", " + err.Error(),
-				Refer:   "",
-			})
+			app.ResponseData(w, msg.ErrSignature, struct {
+				Error string
+			}{err.Error()})
 			return
 		}
 
@@ -66,11 +64,11 @@ func SignatureMiddleware(next http.Handler) http.Handler {
 
 		// 5. Check
 		if signature != token.Signature {
-			app.ResponseRaw(w, app.JsonError{
-				Code:    msg.ErrSignature,
-				Message: msg.Text(msg.ErrSignature),
-				Refer:   "",
-			})
+			app.ResponseData(w, msg.ErrSignature, struct {
+				Error      string
+				SignedBody string
+				Refer      string
+			}{SignedBody: signedBody, Error: "signature is not matched"})
 			return
 		}
 

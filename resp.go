@@ -6,16 +6,15 @@ import (
 	"net/http"
 )
 
-type JsonOK struct {
+type JsonCode struct {
+	Code    int
+	Message string
+}
+
+type JsonData struct {
 	Code    int
 	Message string
 	Data    interface{}
-}
-
-type JsonError struct {
-	Code    int
-	Message string
-	Refer   string
 }
 
 func ResponseRaw(w http.ResponseWriter, data interface{}) {
@@ -26,18 +25,18 @@ func ResponseRaw(w http.ResponseWriter, data interface{}) {
 
 func ResponseCode(w http.ResponseWriter, code int) {
 	w.Header().Set("Content-Type", "application/json")
-	bs, _ := json.Marshal(JsonError{
+	bs, _ := json.Marshal(JsonCode{
 		Code:    code,
 		Message: msg.Text(code),
 	})
 	w.Write(bs)
 }
 
-func ResponseData(w http.ResponseWriter, data interface{}) {
+func ResponseData(w http.ResponseWriter, code int, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
-	bs, _ := json.Marshal(JsonOK{
-		Code:    msg.OK,
-		Message: msg.Text(msg.OK),
+	bs, _ := json.Marshal(JsonData{
+		Code:    code,
+		Message: msg.Text(code),
 		Data:    data,
 	})
 	w.Write(bs)
