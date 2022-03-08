@@ -109,7 +109,7 @@ func parseAuthorization(r *http.Request) (*authorization, error) {
 func createSignedBody(r *http.Request) (string, error) {
 
 	// 1. HTTPMethod CanonicalURI
-	signedBody := r.Method + "\n" + r.URL.Path + "\n"
+	signedBody := r.Method + "\n" + r.URL.EscapedPath() + "\n"
 
 	// 2. CanonicalQueryString
 	query := strings.Split(r.URL.RawQuery, "&")
