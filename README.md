@@ -2,7 +2,7 @@
 按依赖划分项目结构
 
 
-## request
+## Request
 ```go
 // 获取 uri
 vars := mux.Vars(r)
@@ -26,7 +26,7 @@ v, _ := url.ParseQuery(string(b))
 ```
 
 
-## cookie
+## Cookie
 ```go
 // 读取 cookie
 r.Cookies()
@@ -36,6 +36,83 @@ cookie := &http.Cookie{Name: "userId", Value: "123456"}
 http.SetCookie(w, cookie)
 ```
 
+## Code
+```golang
+// 分隔符
+const (
+    nul uint8 = 0x00 // 空字符
+    lf  uint8 = 0x0A // 换行
+    cr  uint8 = 0x0D // 回车键
+    fs  uint8 = 0x1C // 文件分隔符
+    gs  uint8 = 0x1D // 组分隔符
+    rs  uint8 = 0x1E // 记录分隔符
+    us  uint8 = 0x1F // 单元分隔符
+)
+```
+
+```golang
+// bytes
+bs[0] = 0x1F
+copy(bs, bs1)
+bytes.Split(bs, []byte{0x1F})
+```
+
+
+```golang
+// 守护进程
+var w sync.WaitGroup
+w.Add(2)
+go func () {
+    // do something
+    w.Done()
+}
+go func () {
+    // do something
+    w.Done()
+}
+w.Wait()
+```
+
+
+```golang
+// map是无序的, 数组是有序的
+var foo = [3]int{1, 2, 3}
+var bar = map[string]int64{
+    "a": 1,
+    "b": 2,
+    "c": 3,
+}
+
+for index, item := range foo {
+    fmt.Println(index, item)
+}
+
+for index, item := range bar {
+    fmt.Println(index, item)
+}
+
+// 输出：
+// 0 1
+// 1 2
+// 2 3
+
+// c 3
+// a 1
+// b 2
+
+// 解决方案 - 引入其他排序数组
+import "sort"
+
+var m map[int]string
+var keys []int
+for k := range m {
+    keys = append(keys, k)
+}
+sort.Ints(keys)
+for _, k := range keys {
+    fmt.Println("Key:", k, "Value:", m[k])
+}
+```
 
 ## 优秀组件
 | 包名 | 简介 |
