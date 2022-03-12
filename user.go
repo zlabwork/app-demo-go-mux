@@ -1,6 +1,9 @@
 package app
 
-import "time"
+import (
+	"context"
+	"time"
+)
 
 type User struct {
 	Id     int64
@@ -11,4 +14,13 @@ type User struct {
 	State  int
 	Ctime  time.Time
 	Mtime  time.Time
+}
+
+// UserRepository Interfaces that the repository layer needs to implement
+type UserRepository interface {
+	GetOne(ctx context.Context, id int64) (*User, error)
+	GetMany(ctx context.Context, id []int64) ([]*User, error)
+	Delete(ctx context.Context, id int64) error
+	Create(ctx context.Context, u *User) error
+	Modify(ctx context.Context, u *User) error
 }

@@ -6,18 +6,9 @@ import (
 	"context"
 )
 
-// UserRepository Interfaces that the repository layer needs to implement
-type UserRepository interface {
-	GetOne(ctx context.Context, id int64) (*app.User, error)
-	GetMany(ctx context.Context, id []int64) ([]*app.User, error)
-	Delete(ctx context.Context, id int64) error
-	Create(ctx context.Context, u *app.User) error
-	Modify(ctx context.Context, u *app.User) error
-}
-
 type UserService struct {
 	ctx  context.Context
-	Repo UserRepository
+	Repo app.UserRepository
 }
 
 func NewUserService(ctx context.Context) (*UserService, error) {
