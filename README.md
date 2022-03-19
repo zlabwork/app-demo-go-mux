@@ -1,7 +1,3 @@
-## 最佳实践
-按依赖划分项目结构
-
-
 ## Request
 ```go
 // 获取 uri
@@ -36,7 +32,8 @@ cookie := &http.Cookie{Name: "userId", Value: "123456"}
 http.SetCookie(w, cookie)
 ```
 
-## Code
+
+## Defined
 ```golang
 // 分隔符
 const (
@@ -50,6 +47,37 @@ const (
 )
 ```
 
+
+## Uint32/16/8 to bytes
+```golang
+// uint64 to []byte
+// e.g. 1
+var num uint64 = 258
+b := make([]byte, 8)
+binary.BigEndian.PutUint64(b, num)
+
+// e.g. 2
+var num uint16 = 2
+bf := bytes.NewBuffer(nil)
+binary.Write(bf, binary.BigEndian, num)
+b := bf.Bytes() // [0 2]
+```
+
+
+## Bytes to uint32/16/8
+```golang
+bs := []byte{0x00, 0x00, 0x01, 0x02}
+num := binary.BigEndian.Uint32(bs)
+
+bs := []byte{0x01, 0x02}
+num := binary.BigEndian.Uint16(bs)
+
+bs := []byte{0x01}
+num := bs[0]
+```
+
+
+## Copy
 ```golang
 // bytes
 bs[0] = 0x1F
@@ -113,6 +141,7 @@ for _, k := range keys {
     fmt.Println("Key:", k, "Value:", m[k])
 }
 ```
+
 
 ## 优秀组件
 | 包名 | 简介 |
