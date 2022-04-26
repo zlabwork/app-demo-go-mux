@@ -12,11 +12,19 @@ type handle struct {
 }
 
 // ConnectMongodb
+// https://docs.mongodb.com/drivers/go/current/
+// https://developer.mongodb.com/community/forums/tag/golang/
+// https://www.mongodb.com/docs/drivers/go/current/fundamentals/connection/
+//
+// URI e.g.
 // mongodb://127.0.0.1:27017
-// mongodb://foo:bar@localhost:27017
-func ConnectMongodb(dsn string) (*handle, error) {
+// mongodb://user:pass@hostname:27017
+// mongodb://user:pass@hostname:27017/?maxPoolSize=20&w=majority
+// mongodb://host1:27017,host2:27017,host3:27017/?replicaSet=myRS
+func ConnectMongodb(uri string) (*handle, error) {
+
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	opts := options.Client().ApplyURI(dsn)
+	opts := options.Client().ApplyURI(uri)
 	cli, err := mongo.Connect(ctx, opts)
 	if err != nil {
 		return nil, err

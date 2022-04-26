@@ -24,6 +24,8 @@ func ConnectPostgres(dsn string) (*handle, error) {
 		conn.Close()
 		return nil, err
 	}
+	conn.SetMaxIdleConns(5)
+	conn.SetMaxOpenConns(20)
 
 	return &handle{
 		Conn: conn,
