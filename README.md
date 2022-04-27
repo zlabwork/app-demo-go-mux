@@ -167,6 +167,7 @@ for _, k := range keys {
 | [github.com/bwmarrin/snowflake](https://github.com/bwmarrin/snowflake) | ID生成 |
 | [github.com/google/uuid](https://github.com/google/uuid) | UUID生成 |
 | [github.com/silenceper/pool](https://github.com/silenceper/pool) | 线程池 |
+| [github.com/apache/thrift](https://github.com/apache/thrift) | thrift |
 
 
 ## 技术栈
