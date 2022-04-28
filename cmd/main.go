@@ -7,6 +7,7 @@ import (
 	"app/restful"
 	"context"
 	"flag"
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
@@ -18,7 +19,7 @@ import (
 	"time"
 )
 
-func main() {
+func init() {
 
 	// env
 	err := godotenv.Load("../.env")
@@ -35,16 +36,43 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// logs
+	f, err := os.OpenFile("logs.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		log.SetOutput(os.Stdout)
+	} else {
+		log.SetOutput(f)
+	}
+	// log.SetFormatter(&log.JSONFormatter{})
+	log.SetFormatter(&log.TextFormatter{})
+
 	// libs
 	app.Libs = app.NewLibs()
+}
 
-	// config & router
+func usage() {
+
+	fmt.Fprint(os.Stderr, "Usage of ", os.Args[0], ":\n")
+	flag.PrintDefaults()
+	fmt.Fprint(os.Stderr, "\n")
+}
+
+func main() {
+
+	var help bool
 	var wait time.Duration
 	var dir string
+	flag.Usage = usage
+	flag.BoolVar(&help, "h", false, "help")
 	flag.DurationVar(&wait, "timeout", time.Second*15, "the duration for which the server gracefully wait for existing connections to finish - e.g. 15s or 1m")
 	flag.StringVar(&dir, "dir", "assets", "the directory to serve files")
 	flag.Parse()
+	if help {
+		usage()
+		os.Exit(1)
+	}
 
+	// config & router
 	r := mux.NewRouter().StrictSlash(true)
 	r.Use(middleware.LoggingMiddleware)
 	r.Use(middleware.SignatureMiddleware)
@@ -68,8 +96,10 @@ func main() {
 			log.Println(err)
 		}
 	}()
-	app.Banner("Service port :" + os.Getenv("APP_PORT"))
-	log.Println("the service is started")
+	app.Banner("Listening On :" + os.Getenv("APP_PORT"))
+	log.Println("service is started")
+
+	// boot
 	boot.Run()
 
 	c := make(chan os.Signal, 1)
@@ -91,15 +121,4 @@ func main() {
 	// to finalize based on context cancellation.
 	log.Println("shutting down")
 	os.Exit(0)
-}
-
-func init() {
-	f, err := os.OpenFile("logs.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		log.SetOutput(os.Stdout)
-	} else {
-		log.SetOutput(f)
-	}
-	// log.SetFormatter(&log.JSONFormatter{})
-	log.SetFormatter(&log.TextFormatter{})
 }
