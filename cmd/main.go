@@ -2,7 +2,6 @@ package main
 
 import (
 	"app"
-	"app/boot"
 	"app/middleware"
 	"app/restful"
 	"context"
@@ -98,9 +97,6 @@ func main() {
 	}()
 	app.Banner("Listening On :" + os.Getenv("APP_PORT"))
 	log.Println("service is started")
-
-	// boot
-	boot.Run()
 
 	c := make(chan os.Signal, 1)
 	// We'll accept graceful shutdowns when quit via SIGINT (Ctrl+C)

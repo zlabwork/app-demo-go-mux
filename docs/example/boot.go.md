@@ -1,3 +1,4 @@
+```go
 package boot
 
 import (
@@ -19,3 +20,4 @@ func setEnv() error {
 func Run() {
 	setEnv()
 }
+```
