@@ -157,7 +157,6 @@ for _, k := range keys {
 | [github.com/gocql/gocql](https://github.com/gocql/gocql) | 数据库驱动, Cassandra |
 | [go.mongodb.org/mongo-driver](https://go.mongodb.org/mongo-driver) | 数据库驱动, mongoDB |
 | [github.com/go-redis/redis](https://github.com/go-redis/redis) | 数据库驱动, redis |
-| [github.com/gomodule/redigo](https://github.com/gomodule/redigo) | 数据库驱动, redis 不推荐 |
 | [github.com/go-resty/resty/](https://github.com/go-resty/resty/) | http 请求客户端 |
 | [github.com/valyala/fastjson](https://github.com/valyala/fastjson) | json 解析 |
 | [github.com/tidwall/gjson](https://github.com/tidwall/gjson) | json 解析, 注意: []强制转为字符串后为[] |
@@ -167,7 +166,8 @@ for _, k := range keys {
 | [github.com/bwmarrin/snowflake](https://github.com/bwmarrin/snowflake) | ID生成 |
 | [github.com/google/uuid](https://github.com/google/uuid) | UUID生成 |
 | [github.com/silenceper/pool](https://github.com/silenceper/pool) | 线程池 |
-| [github.com/apache/thrift](https://github.com/apache/thrift) | thrift |
+| [github.com/apache/thrift](https://github.com/apache/thrift) | Thrift |
+| [github.com/golang-jwt/jwt/v4](https://github.com/golang-jwt/jwt/v4) | Json web token |
 
 
 ## 技术栈
