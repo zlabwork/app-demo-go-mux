@@ -143,7 +143,9 @@ for _, k := range keys {
 ```
 
 
-## 优秀组件
+## Libraries
+Visit [here](https://github.com/avelino/awesome-go) for more about the libraries.  
+
 | 包名 | 简介 |
 | --- | --- |
 | [github.com/gorilla/mux](https://github.com/gorilla/mux) | web 框架 |
@@ -152,6 +154,7 @@ for _, k := range keys {
 | [github.com/joho/godotenv](https://github.com/joho/godotenv) | 配置, env 环境变量 |
 | [gopkg.in/yaml.v3](https://gopkg.in/yaml.v3) | 配置, yaml |
 | [github.com/spf13/viper](https://github.com/spf13/viper) | 配置, 支持多种格式 |
+| [gorm.io/gorm](https://gorm.io) | MySQL ORM |
 | [github.com/go-sql-driver/mysql](https://github.com/go-sql-driver/mysql) | 数据库驱动, MySQL |
 | [github.com/lib/pq](https://github.com/lib/pq) | 数据库驱动, Postgres |
 | [github.com/gocql/gocql](https://github.com/gocql/gocql) | 数据库驱动, Cassandra |
@@ -170,7 +173,7 @@ for _, k := range keys {
 | [github.com/golang-jwt/jwt/v4](https://github.com/golang-jwt/jwt/v4) | Json web token |
 
 
-## 技术栈
+## Technology
 | 技术 | 简介 |
 | --- | --- |
 | [Zipkin](https://zipkin.io/) | 链路追踪 |
@@ -178,15 +181,16 @@ for _, k := range keys {
 | [Jaeger](https://www.jaegertracing.io/)   | 链路追踪 |
 
 
-## 工具
+## Tools
 https://mholt.github.io/json-to-go  
 https://www.processon.com  
 https://www.figma.com  
+https://swagger.io  
 
 
-## 参考文档
-[Dapper 大规模分布式系统的跟踪系统](https://bigbully.github.io/Dapper-translation/)  
-[微服务架构](https://www.zhihu.com/question/65502802)  
+## Docs
+https://bigbully.github.io/Dapper-translation  
+https://www.zhihu.com/question/65502802  
 https://github.com/avelino/awesome-go  
 https://zhuanlan.zhihu.com/p/39326315  
 https://medium.com/@benbjohnson/standard-package-layout-7cdbc8391fc1  
