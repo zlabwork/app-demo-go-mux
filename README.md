@@ -143,6 +143,43 @@ for _, k := range keys {
 ```
 
 
+```go
+// 切片特性 - 引用传递
+func main() {
+	alice := []int{0, 1, 2, 3, 4}
+	fmt.Println(alice) // [0 1 2 3 4]
+
+	bob := nothingDid(alice)
+	bob[1] = 9
+
+	fmt.Println(alice) // [0 9 2 3 4]
+}
+
+func nothingDid(data []int) []int {
+	return data
+}
+```
+
+
+```go
+// 数组特性 - 值传递
+func main() {
+
+	alice := [5]int{0, 1, 2, 3, 4}
+	fmt.Println(alice) // [0 1 2 3 4]
+
+	bob := nothingDid(alice)
+	bob[1] = 9
+
+	fmt.Println(alice) // [0 1 2 3 4]
+}
+
+func nothingDid(data [5]int) [5]int {
+	return data
+}
+```
+
+
 ## Libraries
 Visit [here](https://github.com/avelino/awesome-go) for more about the libraries.  
 

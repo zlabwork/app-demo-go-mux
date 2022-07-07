@@ -65,3 +65,57 @@ func randomBytes(n int) []byte {
 	return b
 }
 ```
+
+
+## 切片排序 []byte
+```go
+type SortBytes [][]byte
+
+func (a SortBytes) Len() int           { return len(a) }
+func (a SortBytes) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a SortBytes) Less(i, j int) bool { return bytes.Compare(a[i], a[j]) == -1 }
+
+func main() {
+	data := [][]byte{
+		{1, 1, 1, 1},
+		{3, 3, 3, 3},
+		{2, 2, 2, 2},
+	}
+	sort.Sort(SortBytes(data))
+	fmt.Println(data) // [[1 1 1 1] [2 2 2 2] [3 3 3 3]]
+}
+```
+
+
+## 切片去重
+```go
+func main() {
+
+	data := [][]byte{
+		{1, 1, 1, 1},
+		{1, 1, 1, 1},
+		{2, 2, 2, 2},
+		{2, 2, 2, 2},
+	}
+	fmt.Println(uniq(data)) // [[1 1 1 1] [2 2 2 2]]
+}
+
+func uniq(data [][]byte) [][]byte {
+
+	l := len(data)
+	if l == 0 {
+		return nil
+	}
+	idx := 0
+	for i := 1; i < l; i++ {
+		if bytes.Compare(data[i], data[i-1]) == 0 {
+			continue
+		} else {
+			idx += 1
+			data[idx] = data[i]
+		}
+	}
+
+	return data[:idx+1]
+}
+```
