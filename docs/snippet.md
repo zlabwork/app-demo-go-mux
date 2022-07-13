@@ -119,3 +119,56 @@ func uniq(data [][]byte) [][]byte {
 	return data[:idx+1]
 }
 ```
+
+
+## 执行文件路径
+```go
+func GetRootPath() string {
+
+	dir := getPathByExecutable()
+	// TODO: temp path look like dir
+	if strings.Contains(dir, getTmpDir()) {
+		return getPathByCaller()
+	}
+	return dir
+}
+
+// temp path
+func getTmpDir() string {
+
+	switch runtime.GOOS {
+	case "linux":
+	case "darwin":
+	case "windows":
+		dir := os.Getenv("TEMP")
+		if dir == "" {
+			dir = os.Getenv("TMP")
+		}
+		p, _ := filepath.EvalSymlinks(dir)
+		return p
+	}
+	return "/tmp"
+}
+
+// absolute path - go build
+func getPathByExecutable() string {
+
+	p, err := os.Executable()
+	if err != nil {
+		log.Fatal(err)
+	}
+	r, _ := filepath.EvalSymlinks(filepath.Dir(p))
+	return r
+}
+
+// absolute path - go run
+func getPathByCaller() string {
+
+	var p string
+	_, filename, _, ok := runtime.Caller(0)
+	if ok {
+		p = path.Dir(filename)
+	}
+	return p
+}
+```
