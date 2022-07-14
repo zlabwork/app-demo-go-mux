@@ -20,14 +20,17 @@ import (
 
 func init() {
 
+	// root path
+	app.Dir.SetRoot("../")
+
 	// env
-	err := godotenv.Load("../.env")
+	err := godotenv.Load(app.Dir.Root + ".env")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// app.yaml
-	bs, err := ioutil.ReadFile("../config/app.yaml")
+	bs, err := ioutil.ReadFile(app.Dir.Config + "app.yaml")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -36,7 +39,7 @@ func init() {
 	}
 
 	// logs
-	f, err := os.OpenFile("logs.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	f, err := os.OpenFile(app.Dir.Data+"logs.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
 		log.SetOutput(os.Stdout)
 	} else {
@@ -56,33 +59,34 @@ func usage() {
 	fmt.Fprint(os.Stderr, "\n")
 }
 
-func main() {
+func router() *mux.Router {
 
-	var help bool
-	var wait time.Duration
-	var dir string
-	flag.Usage = usage
-	flag.BoolVar(&help, "h", false, "help")
-	flag.DurationVar(&wait, "timeout", time.Second*15, "the duration for which the server gracefully wait for existing connections to finish - e.g. 15s or 1m")
-	flag.StringVar(&dir, "dir", "assets", "the directory to serve files")
-	flag.Parse()
-	if help {
-		usage()
-		os.Exit(1)
-	}
-
-	// config & router
 	r := mux.NewRouter().StrictSlash(true)
 	r.Use(middleware.LoggingMiddleware)
 	r.Use(middleware.SignatureMiddleware)
 	r.HandleFunc("/", restful.DefaultHandler)
 	r.HandleFunc("/demo1/{method:[a-z]+}/{name:[0-9a-zA-Z_-]+}", restful.DefaultHandler).Methods(http.MethodGet)
 	r.HandleFunc("/demo2/{id:[0-9]+}", restful.DefaultHandler).Methods(http.MethodGet, http.MethodPut)
-	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir(dir))))
+	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir(app.Dir.Assets))))
 	r.NotFoundHandler = http.HandlerFunc(restful.NotFoundHandler)
+	return r
+}
+
+func main() {
+
+	var help bool
+	var wait time.Duration
+	flag.Usage = usage
+	flag.BoolVar(&help, "h", false, "help")
+	flag.DurationVar(&wait, "timeout", time.Second*15, "the duration for which the server gracefully wait for existing connections to finish - e.g. 15s or 1m")
+	flag.Parse()
+	if help {
+		usage()
+		os.Exit(1)
+	}
 
 	srv := &http.Server{
-		Handler:      r,
+		Handler:      router(),
 		Addr:         "0.0.0.0:" + os.Getenv("APP_PORT"),
 		WriteTimeout: time.Second * 15,
 		ReadTimeout:  time.Second * 15,
