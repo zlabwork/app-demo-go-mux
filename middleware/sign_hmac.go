@@ -30,6 +30,12 @@ func SignatureMiddleware(next http.Handler) http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
+		// ignore
+		if strings.HasPrefix(r.RequestURI, "/assets/") {
+			next.ServeHTTP(w, r)
+			return
+		}
+
 		// 1. Check date time
 		if checkDatetime(r) != nil {
 			app.ResponseData(w, msg.ErrTimeout, struct {
