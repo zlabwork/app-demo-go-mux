@@ -15,3 +15,10 @@ func (d *directory) SetRoot(root string) {
 	d.Data = root + "data/"
 	d.Assets = root + "assets/"
 }
+
+func init() {
+
+	// Root Path - relative to the main.go file
+	// make sure it execute before other init()
+	Dir.SetRoot("../")
+}

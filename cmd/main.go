@@ -20,9 +20,6 @@ import (
 
 func init() {
 
-	// root path
-	app.Dir.SetRoot("../")
-
 	// env
 	err := godotenv.Load(app.Dir.Root + ".env")
 	if err != nil {
@@ -39,7 +36,7 @@ func init() {
 	}
 
 	// logs
-	f, err := os.OpenFile(app.Dir.Data+"logs.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+	f, err := os.OpenFile(app.Dir.Data+"system.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
 		log.SetOutput(os.Stdout)
 	} else {
