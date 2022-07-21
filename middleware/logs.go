@@ -16,9 +16,9 @@ func init() {
 
 	logger.SetOutput(&lumberjack.Logger{
 		Filename:   app.Dir.Data + "access.log",
-		MaxSize:    100,
-		MaxBackups: 3,
-		MaxAge:     28,
+		MaxSize:    200,
+		MaxBackups: 20,
+		MaxAge:     180,
 		Compress:   true,
 	})
 	logger.SetFormatter(new(logsFormatter))
