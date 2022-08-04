@@ -2,7 +2,7 @@ package service
 
 import (
 	"app"
-	"app/service/repository/postgres"
+	"app/service/repository/mysql"
 	"context"
 )
 
@@ -13,7 +13,7 @@ type UserService struct {
 
 func NewUserService(ctx context.Context) (*UserService, error) {
 	// TODO:
-	return &UserService{ctx: ctx, Repo: &postgres.UserRepository{}}, nil
+	return &UserService{ctx: ctx, Repo: &mysql.UserRepository{}}, nil
 }
 
 func (us *UserService) GetOne(id int64) (*app.User, error) {
