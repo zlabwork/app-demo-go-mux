@@ -66,6 +66,9 @@ func router() *mux.Router {
 	r.HandleFunc("/demo2/{id:[0-9]+}", restful.DefaultHandler).Methods(http.MethodGet, http.MethodPut)
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir(app.Dir.Assets))))
 	r.NotFoundHandler = http.HandlerFunc(restful.NotFoundHandler)
+	// router group
+	user := r.PathPrefix("/users").Subrouter()
+	user.HandleFunc("/{id:[0-9a-zA-Z_-]+}", restful.DefaultHandler).Methods(http.MethodGet)
 	return r
 }
 

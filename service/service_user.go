@@ -7,31 +7,35 @@ import (
 )
 
 type UserService struct {
-	ctx  context.Context
 	Repo app.UserRepository
 }
 
-func NewUserService(ctx context.Context) (*UserService, error) {
+func NewUserService() (*UserService, error) {
 	// TODO:
-	return &UserService{ctx: ctx, Repo: &mysql.UserRepository{}}, nil
+	return &UserService{Repo: &mysql.UserRepository{}}, nil
 }
 
-func (us *UserService) GetOne(id int64) (*app.User, error) {
-	return us.Repo.GetOne(us.ctx, id)
+func (us *UserService) GetOne(ctx context.Context, id int64) (*app.User, error) {
+
+	return us.Repo.GetOne(ctx, id)
 }
 
-func (us *UserService) GetMany(id []int64) ([]*app.User, error) {
-	return us.Repo.GetMany(us.ctx, id)
+func (us *UserService) GetMany(ctx context.Context, id []int64) ([]*app.User, error) {
+
+	return us.Repo.GetMany(ctx, id)
 }
 
-func (us *UserService) Delete(id int64) error {
-	return us.Repo.Delete(us.ctx, id)
+func (us *UserService) Delete(ctx context.Context, id int64) error {
+
+	return us.Repo.Delete(ctx, id)
 }
 
-func (us *UserService) Create(u *app.User) error {
-	return us.Repo.Create(us.ctx, u)
+func (us *UserService) Create(ctx context.Context, u *app.User) error {
+
+	return us.Repo.Create(ctx, u)
 }
 
-func (us *UserService) Modify(u *app.User) error {
-	return us.Repo.Modify(us.ctx, u)
+func (us *UserService) Modify(ctx context.Context, u *app.User) error {
+
+	return us.Repo.Modify(ctx, u)
 }
