@@ -79,3 +79,55 @@ func ConnectPostgres(dsn string) (*handle, error) {
 # 查看连接数
 db.serverStatus().connections;
 ```
+
+
+## ORM - gorm
+```shell
+go get gorm.io/gorm
+go get gorm.io/driver/mysql
+```
+
+```go
+package mysql
+
+import (
+	"fmt"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"os"
+	"time"
+)
+
+// Connect
+// @docs https://github.com/go-sql-driver/mysql#dsn-data-source-name
+// @docs https://gorm.io/zh_CN/docs/connecting_to_the_database.html
+// dsn := "user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
+func Connect(dsn string) (*gorm.DB, error) {
+
+	conn, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+	db, err := conn.DB()
+
+	// 设置空闲连接池中连接的最大数量
+	db.SetMaxIdleConns(10)
+
+	// 设置打开数据库连接的最大数量。
+	db.SetMaxOpenConns(100)
+
+	// 设置了连接可复用的最大时间。
+	db.SetConnMaxLifetime(time.Hour)
+
+	return conn, err
+}
+
+func getHandle() (*gorm.DB, error) {
+
+	host := os.Getenv("MYSQL_HOST")
+	port := os.Getenv("MYSQL_PORT")
+	user := os.Getenv("MYSQL_USER")
+	pass := os.Getenv("MYSQL_PASS")
+	name := os.Getenv("MYSQL_NAME")
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=true&loc=Local", user, pass, host, port, name)
+	return Connect(dsn)
+}
+```
