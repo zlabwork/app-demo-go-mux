@@ -12,6 +12,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"math/rand"
 	"net/http"
 	"os"
 	"os/signal"
@@ -19,6 +20,9 @@ import (
 )
 
 func init() {
+
+	// rand seed
+	rand.Seed(time.Now().UnixNano())
 
 	// env
 	err := godotenv.Load(app.Dir.Root + ".env")
