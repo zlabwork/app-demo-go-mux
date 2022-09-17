@@ -21,11 +21,6 @@ const requestTimeout = 300
 
 const dateFormat = "20060102T150405Z0700"
 
-type authorization struct {
-	Credential string
-	Signature  string
-}
-
 func SignatureMiddleware(next http.Handler) http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -36,26 +31,43 @@ func SignatureMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		// 1. Check date time
-		if checkDatetime(r) != nil {
+		// 1. Authorization
+		auth, err := parseAuthorization(r)
+
+		// 2. Check Authorization format & Check date time
+		date, ok := auth["Date"]
+		if !ok || checkDatetime(date) != nil {
 			app.ResponseData(w, msg.ErrTimeout, struct {
 				ServerDate string
 			}{ServerDate: time.Now().UTC().Format(dateFormat)})
 			return
 		}
-
-		// 2. Authorization
-		token, err := parseAuthorization(r)
-		if err != nil {
+		nonce, ok := auth["Nonce"]
+		if !ok {
 			app.ResponseData(w, msg.ErrAccess, struct {
 				Error string
-			}{Error: err.Error()})
+			}{Error: "missing Authorization nonce"})
 			return
 		}
-		aks := os.Getenv("AK_" + token.Credential)
+		sign, ok := auth["Signature"]
+		if !ok {
+			app.ResponseData(w, msg.ErrAccess, struct {
+				Error string
+			}{Error: "missing Authorization Signature"})
+			return
+		}
+		aki, ok := auth["Credential"]
+		if !ok {
+			app.ResponseData(w, msg.ErrAccess, struct {
+				Error string
+			}{Error: "missing Authorization Credential"})
+			return
+		}
+		// FIXME: get keySecret
+		aks := os.Getenv("AK_" + aki)
 
 		// 3. SignedBody
-		signedBody, err := createSignedBody(r)
+		signedBody, err := createSignedBody(date, nonce, r)
 		if err != nil {
 			app.ResponseData(w, msg.ErrSignature, struct {
 				Error string
@@ -69,7 +81,7 @@ func SignatureMiddleware(next http.Handler) http.Handler {
 		signature := hex.EncodeToString(h.Sum(nil))
 
 		// 5. Check
-		if signature != token.Signature {
+		if signature != sign {
 			app.ResponseData(w, msg.ErrSignature, struct {
 				Error      string
 				SignedBody string
@@ -78,44 +90,46 @@ func SignatureMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		// 5. Call the next handler, which can be another middleware in the chain, or the final handler.
+		// 6. Call the next handler, which can be another middleware in the chain, or the final handler.
 		next.ServeHTTP(w, r)
 	})
 }
 
-func parseAuthorization(r *http.Request) (*authorization, error) {
+func parseAuthorization(r *http.Request) (map[string]string, error) {
 
-	token := r.Header.Get("Authorization")
-	if token == "" {
+	auth := r.Header.Get("Authorization")
+	if auth == "" {
 		return nil, fmt.Errorf("missing Authorization")
 	}
 	data := make(map[string]string)
-	for _, tk := range strings.Split(token, ",") {
+	for _, tk := range strings.Split(auth[5:], ",") {
 		if !strings.Contains(tk, "=") {
 			continue
 		}
-		s := strings.Split(tk, "=")
+		s := strings.Split(strings.TrimSpace(tk), "=")
 		data[s[0]] = s[1]
 	}
-	sign, ok := data["Signature"]
-	if ok != true {
-		return nil, fmt.Errorf("missing Authorization Signature")
-	}
-	aki, ok := data["Credential"]
-	if ok != true {
-		return nil, fmt.Errorf("missing Authorization Credential")
-	}
 
-	return &authorization{
-		Credential: aki,
-		Signature:  sign,
-	}, nil
+	return data, nil
 }
 
-func createSignedBody(r *http.Request) (string, error) {
+func checkDatetime(date string) error {
+
+	dt, err := time.Parse(dateFormat, date)
+	if err != nil {
+		return err
+	}
+	if math.Abs(float64(time.Now().Unix()-dt.Unix())) > requestTimeout {
+		return fmt.Errorf("timeout")
+	}
+	return nil
+}
+
+func createSignedBody(date, nonce string, r *http.Request) (string, error) {
 
 	// 1. HTTPMethod CanonicalURI
-	signedBody := r.Method + "\n" + r.URL.EscapedPath() + "\n"
+	signedBody := date + "\n" + nonce + "\n"
+	signedBody += r.Method + "\n" + r.URL.EscapedPath() + "\n"
 
 	// 2. CanonicalQueryString
 	query := strings.Split(r.URL.RawQuery, "&")
@@ -141,7 +155,7 @@ func createSignedBody(r *http.Request) (string, error) {
 
 	// 4. HashedPayload
 	var reader io.Reader = r.Body
-	b, _ := ioutil.ReadAll(reader)
+	b, _ := ioutil.ReadAll(reader) // FIXME: 不能二次读取
 	s256 := sha256.New()
 	s256.Write(b)
 	contentHash := hex.EncodeToString(s256.Sum(nil))
@@ -154,16 +168,4 @@ func createSignedBody(r *http.Request) (string, error) {
 	}
 
 	return signedBody, nil
-}
-
-func checkDatetime(r *http.Request) error {
-
-	dateTime, err := time.Parse(dateFormat, r.Header.Get("X-Lab-Date"))
-	if err != nil {
-		return err
-	}
-	if math.Abs(float64(time.Now().Unix()-dateTime.Unix())) > requestTimeout {
-		return fmt.Errorf("timeout")
-	}
-	return nil
 }

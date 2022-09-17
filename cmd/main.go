@@ -49,7 +49,8 @@ func init() {
 	// log.SetFormatter(&log.JSONFormatter{})
 	log.SetFormatter(&log.TextFormatter{})
 
-	// libs
+	// env & libs
+	app.Env()
 	app.Libs = app.NewLibs()
 }
 

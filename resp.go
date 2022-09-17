@@ -18,12 +18,14 @@ type JsonData struct {
 }
 
 func ResponseRaw(w http.ResponseWriter, data interface{}) {
+
 	w.Header().Set("Content-Type", "application/json")
 	bs, _ := json.Marshal(data)
 	w.Write(bs)
 }
 
 func ResponseCode(w http.ResponseWriter, code int) {
+
 	w.Header().Set("Content-Type", "application/json")
 	bs, _ := json.Marshal(JsonCode{
 		Code:    code,
@@ -32,7 +34,18 @@ func ResponseCode(w http.ResponseWriter, code int) {
 	w.Write(bs)
 }
 
+func ResponseMessage(w http.ResponseWriter, code int, message string) {
+
+	w.Header().Set("Content-Type", "application/json")
+	bs, _ := json.Marshal(JsonCode{
+		Code:    code,
+		Message: message,
+	})
+	w.Write(bs)
+}
+
 func ResponseData(w http.ResponseWriter, code int, data interface{}) {
+
 	w.Header().Set("Content-Type", "application/json")
 	bs, _ := json.Marshal(JsonData{
 		Code:    code,

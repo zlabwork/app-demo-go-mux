@@ -1,5 +1,7 @@
 package app
 
+import "os"
+
 type directory struct {
 	Root   string
 	Config string
@@ -21,4 +23,14 @@ func init() {
 	// Root Path - relative to the main.go file
 	// make sure it execute before other init()
 	Dir.SetRoot("../")
+}
+
+func Env() {
+
+	for _, item := range Yaml.Access {
+		if len(item) != 2 {
+			continue
+		}
+		os.Setenv("AK_"+item[0], item[1])
+	}
 }
