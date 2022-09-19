@@ -3,12 +3,12 @@ package middleware
 import (
 	"app"
 	"app/msg"
+	"bytes"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"math"
 	"net/http"
 	"os"
@@ -155,7 +155,8 @@ func createSignedBody(date, nonce string, r *http.Request) (string, error) {
 
 	// 4. HashedPayload
 	var reader io.Reader = r.Body
-	b, _ := ioutil.ReadAll(reader) // FIXME: 不能二次读取
+	b, _ := io.ReadAll(reader)
+	r.Body = io.NopCloser(bytes.NewReader(b)) // reuse body
 	s256 := sha256.New()
 	s256.Write(b)
 	contentHash := hex.EncodeToString(s256.Sum(nil))
