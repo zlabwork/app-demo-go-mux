@@ -38,29 +38,23 @@ func SignatureMiddleware(next http.Handler) http.Handler {
 		date, ok := auth["Date"]
 		if !ok || checkDatetime(date) != nil {
 			app.ResponseData(w, msg.ErrTimeout, struct {
-				ServerDate string
+				ServerDate string `json:"server_date"`
 			}{ServerDate: time.Now().UTC().Format(dateFormat)})
 			return
 		}
 		nonce, ok := auth["Nonce"]
 		if !ok {
-			app.ResponseData(w, msg.ErrAccess, struct {
-				Error string
-			}{Error: "missing Authorization nonce"})
+			app.ResponseMessage(w, msg.ErrAccess, "missing Authorization Nonce")
 			return
 		}
 		sign, ok := auth["Signature"]
 		if !ok {
-			app.ResponseData(w, msg.ErrAccess, struct {
-				Error string
-			}{Error: "missing Authorization Signature"})
+			app.ResponseMessage(w, msg.ErrAccess, "missing Authorization Signature")
 			return
 		}
 		aki, ok := auth["Credential"]
 		if !ok {
-			app.ResponseData(w, msg.ErrAccess, struct {
-				Error string
-			}{Error: "missing Authorization Credential"})
+			app.ResponseMessage(w, msg.ErrAccess, "missing Authorization Credential")
 			return
 		}
 		// FIXME: get keySecret
@@ -69,9 +63,7 @@ func SignatureMiddleware(next http.Handler) http.Handler {
 		// 3. SignedBody
 		signedBody, err := createSignedBody(date, nonce, r)
 		if err != nil {
-			app.ResponseData(w, msg.ErrSignature, struct {
-				Error string
-			}{err.Error()})
+			app.ResponseMessage(w, msg.ErrSignature, err.Error())
 			return
 		}
 
@@ -83,9 +75,9 @@ func SignatureMiddleware(next http.Handler) http.Handler {
 		// 5. Check
 		if signature != sign {
 			app.ResponseData(w, msg.ErrSignature, struct {
-				Error      string
-				SignedBody string
-				Refer      string
+				Error      string `json:"error"`
+				SignedBody string `json:"signed_body"`
+				Refer      string `json:"refer"`
 			}{SignedBody: signedBody, Error: "signature is not matched"})
 			return
 		}
