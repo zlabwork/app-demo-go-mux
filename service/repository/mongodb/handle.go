@@ -29,7 +29,7 @@ func ConnectMongodb(uri string) (*handle, error) {
 	if err != nil {
 		return nil, err
 	}
-	err = cli.Ping(context.Background(), nil)
+	err = cli.Ping(ctx, nil)
 	if err != nil {
 		return nil, err
 	}
