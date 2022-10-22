@@ -18,7 +18,7 @@ import (
 
 const (
     dateFormat = "20060102T150405Z0700"
-    timeout    = 10 * time.Second
+    reqTimeout = 10 * time.Second
 )
 
 type client struct {
@@ -92,7 +92,7 @@ func (cli *client) Call(uri string, method string, reqBody []byte) (responseBody
     }
 
     // 6. Do Request
-    httpCli := http.Client{Timeout: timeout}
+    httpCli := http.Client{Timeout: reqTimeout}
     resp, err := httpCli.Do(req)
     if err != nil {
         return nil, fmt.Errorf("[RPC] " + err.Error())

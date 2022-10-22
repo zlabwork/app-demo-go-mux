@@ -17,9 +17,11 @@ import (
 	"time"
 )
 
-const requestTimeout = 300
-
-const dateFormat = "20060102T150405Z0700"
+const (
+	requestTimeout      = 300
+	dateFormat          = "20060102T150405Z0700"
+	authorizationPrefix = "ZLAB"
+)
 
 func SignatureMiddleware(next http.Handler) http.Handler {
 
@@ -33,13 +35,18 @@ func SignatureMiddleware(next http.Handler) http.Handler {
 
 		// 1. Authorization
 		auth, err := parseAuthorization(r)
+		if err != nil {
+			app.ResponseMessage(w, msg.ErrAccess, err.Error())
+			return
+		}
 
 		// 2. Check Authorization format & Check date time
 		date, ok := auth["Date"]
 		if !ok || checkDatetime(date) != nil {
 			app.ResponseData(w, msg.ErrTimeout, struct {
+				Error      string `json:"error"`
 				ServerDate string `json:"server_date"`
-			}{ServerDate: time.Now().UTC().Format(dateFormat)})
+			}{ServerDate: time.Now().UTC().Format(dateFormat), Error: "request Date timeout"})
 			return
 		}
 		nonce, ok := auth["Nonce"]
@@ -93,8 +100,13 @@ func parseAuthorization(r *http.Request) (map[string]string, error) {
 	if auth == "" {
 		return nil, fmt.Errorf("missing Authorization")
 	}
+	l := len(authorizationPrefix)
+	if auth[:l] != authorizationPrefix {
+		return nil, fmt.Errorf("error Authorization prefix")
+	}
+
 	data := make(map[string]string)
-	for _, tk := range strings.Split(auth[5:], ",") {
+	for _, tk := range strings.Split(auth[l+1:], ",") {
 		if !strings.Contains(tk, "=") {
 			continue
 		}
