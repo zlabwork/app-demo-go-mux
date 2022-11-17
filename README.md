@@ -1,3 +1,7 @@
+## Best Practices
+1. Use `source .env` instead of godotenv
+
+
 ## Request
 ```go
 // 获取 uri
