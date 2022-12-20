@@ -9,48 +9,11 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
-	"gopkg.in/yaml.v2"
-	"io/ioutil"
-	"math/rand"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
 )
-
-func init() {
-
-	// rand seed
-	rand.Seed(time.Now().UnixNano())
-
-	// env
-	if len(os.Getenv("APP_ENV")) == 0 {
-		log.Fatal("env is missing, try to execute 'export `cat .env`' before run the app")
-	}
-
-	// app.yaml
-	bs, err := ioutil.ReadFile(app.Dir.Config + "app.yaml")
-	if err != nil {
-		log.Fatal(err)
-	}
-	if yaml.Unmarshal(bs, app.Yaml) != nil {
-		log.Fatal(err)
-	}
-
-	// logs
-	f, err := os.OpenFile(app.Dir.Data+"system.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
-	if err != nil {
-		log.SetOutput(os.Stdout)
-	} else {
-		log.SetOutput(f)
-	}
-	// log.SetFormatter(&log.JSONFormatter{})
-	log.SetFormatter(&log.TextFormatter{})
-
-	// env & libs
-	app.Env()
-	app.Libs = app.NewLibs()
-}
 
 func usage() {
 

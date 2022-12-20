@@ -1,18 +1,22 @@
 package msg
 
 const (
-	OK           = 200
-	Err          = 400
-	ErrNotFound  = 404
-	ErrTimeout   = 20001
-	ErrSignature = 20002
-	ErrAccess    = 20003
-	ErrEncode    = 20004
-	ErrHeader    = 20005
-	ErrParameter = 20006
-	ErrProcess   = 20007
-	ErrNoData    = 20008
-	ErrModify    = 20009
+	OK          = 200
+	Err         = 400
+	ErrNotFound = 404
+)
+
+const (
+	ErrDefault = iota + 20000
+	ErrTimeout
+	ErrSignature
+	ErrAccess
+	ErrEncode
+	ErrHeader
+	ErrParameter
+	ErrProcess
+	ErrNoData
+	ErrModify
 )
 
 var statusText = map[int]string{

@@ -1,7 +1,7 @@
 package app
 
-var Yaml = &yaml{}
+var Yaml = &yamlData{}
 
-type yaml struct {
+type yamlData struct {
 	Access [][]string
 }

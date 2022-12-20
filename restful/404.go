@@ -1,11 +1,12 @@
 package restful
 
 import (
-	"app"
 	"app/msg"
+	"app/response"
 	"net/http"
 )
 
 func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
-	app.ResponseCode(w, msg.ErrNotFound)
+
+	response.Code(w, msg.ErrNotFound)
 }

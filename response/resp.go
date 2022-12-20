@@ -1,4 +1,4 @@
-package app
+package response
 
 import (
 	"app/msg"
@@ -17,14 +17,14 @@ type JsonData struct {
 	Data    interface{} `json:"data"`
 }
 
-func ResponseRaw(w http.ResponseWriter, data interface{}) {
+func Raw(w http.ResponseWriter, data interface{}) {
 
 	w.Header().Set("Content-Type", "application/json")
 	bs, _ := json.Marshal(data)
 	w.Write(bs)
 }
 
-func ResponseCode(w http.ResponseWriter, code int) {
+func Code(w http.ResponseWriter, code int) {
 
 	w.Header().Set("Content-Type", "application/json")
 	bs, _ := json.Marshal(JsonCode{
@@ -34,7 +34,7 @@ func ResponseCode(w http.ResponseWriter, code int) {
 	w.Write(bs)
 }
 
-func ResponseMessage(w http.ResponseWriter, code int, message string) {
+func Message(w http.ResponseWriter, code int, message string) {
 
 	w.Header().Set("Content-Type", "application/json")
 	bs, _ := json.Marshal(JsonCode{
@@ -44,7 +44,7 @@ func ResponseMessage(w http.ResponseWriter, code int, message string) {
 	w.Write(bs)
 }
 
-func ResponseData(w http.ResponseWriter, code int, data interface{}) {
+func Data(w http.ResponseWriter, code int, data interface{}) {
 
 	w.Header().Set("Content-Type", "application/json")
 	bs, _ := json.Marshal(JsonData{
