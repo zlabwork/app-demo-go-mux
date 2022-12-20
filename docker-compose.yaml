@@ -1,12 +1,11 @@
 version: "3.9"
 
 services:
-  myapp:
-    image: 'golang:1.17.3-buster'
-    restart: always
-    container_name: myapp
+  golang:
+    image: 'golang:1.19-bullseye'
+    container_name: node-golang
     ports:
-      - '${APP_PORT}:${APP_PORT}'
+      - '${APP_PORT:-8000}:${APP_PORT:-8000}'
     volumes:
       - .:/app
       - ${GOPATH}/pkg/mod:/go/pkg/mod
@@ -16,9 +15,10 @@ services:
       - |
         go env -w GO111MODULE=on
         go env -w GOPROXY=https://goproxy.io,direct
-        cd /app/cmd
+        cd /app
         go mod tidy
-        go run main.go
+        export `cat .env | grep -v "#"`
+        go run cmd/main.go
         # go build -o /app/bin/application
     networks:
       - appnet

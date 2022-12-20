@@ -1,9 +1,9 @@
 ## Best Practices
 ```shell
-# Use `source` or `export` instead of godotenv
+# Use `export` instead of godotenv
 # source .env
-export `cat .env` # tested in mac
-export `cat .env` && go run cmd/main.go
+export `cat .env` # tested in mac and unix
+export `cat .env | grep -v "#"` && go run cmd/main.go
 ```
 
 
