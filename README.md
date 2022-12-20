@@ -1,5 +1,10 @@
 ## Best Practices
-1. Use `source .env` instead of godotenv
+```shell
+# Use `source` or `export` instead of godotenv
+# source .env
+export `cat .env` # tested in mac
+export `cat .env` && go run cmd/main.go
+```
 
 
 ## Request

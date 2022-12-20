@@ -1,6 +1,8 @@
 package app
 
-import "os"
+import (
+	"os"
+)
 
 type directory struct {
 	Root   string
@@ -20,9 +22,15 @@ func (d *directory) SetRoot(root string) {
 
 func init() {
 
+	// TODO:
 	// Root Path - relative to the main.go file
 	// make sure it execute before other init()
-	Dir.SetRoot("../")
+	_, err := os.Stat("./go.mod")
+	if err != nil {
+		Dir.SetRoot("../")
+	} else {
+		Dir.SetRoot("./")
+	}
 }
 
 func Env() {

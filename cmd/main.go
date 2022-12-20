@@ -8,7 +8,6 @@ import (
 	"flag"
 	"fmt"
 	"github.com/gorilla/mux"
-	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
@@ -25,9 +24,8 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 
 	// env
-	err := godotenv.Load(app.Dir.Root + ".env")
-	if err != nil {
-		log.Fatal(err)
+	if len(os.Getenv("APP_ENV")) == 0 {
+		log.Fatal("env is missing, try to execute 'export `cat .env`' before run the app")
 	}
 
 	// app.yaml
