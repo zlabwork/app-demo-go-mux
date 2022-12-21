@@ -36,6 +36,14 @@ func getHandle() (*handle, error) {
 
 
 ## Postgres
+```sql
+-- 查看当前配置的最大连接数
+show max_connections;
+
+-- 查询当前活跃连接数
+select count(1) from pg_stat_activity;
+```
+
 ```go
 package postgres
 
