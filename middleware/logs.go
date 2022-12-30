@@ -2,8 +2,9 @@ package middleware
 
 import (
 	"app"
+	"app/libs/utils"
+	"context"
 	"fmt"
-	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"net/http"
@@ -47,7 +48,7 @@ func LoggingMiddleware(next http.Handler) http.Handler {
 
 		id := r.Header.Get("Trace-Id")
 		if id == "" {
-			id = uuid.New().String()
+			id = utils.NewObjectID().Hex()
 			w.Header().Set("Trace-Id", id)
 		}
 
@@ -55,6 +56,7 @@ func LoggingMiddleware(next http.Handler) http.Handler {
 		logger.Println(fmt.Sprintf("[%s] [%s] %s \"%s %s\" \"%s\"", date, id, getRealIP(r), r.Method, r.RequestURI, r.Header.Get("User-Agent")))
 
 		// Call the next handler, which can be another middleware in the chain, or the final handler.
-		next.ServeHTTP(w, r)
+		ctx := context.WithValue(r.Context(), app.TraceKey, id)
+		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
