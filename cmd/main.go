@@ -26,10 +26,10 @@ func router() *mux.Router {
 
 	r := mux.NewRouter().StrictSlash(true)
 	r.Use(middleware.LoggingMiddleware)
-	r.Use(middleware.SignatureMiddleware)
+	// r.Use(middleware.SignatureMiddleware)
 	r.HandleFunc("/", restful.DefaultHandler)
-	r.HandleFunc("/demo1/{method:[a-z]+}/{name:[0-9a-zA-Z_-]+}", restful.DefaultHandler).Methods(http.MethodGet)
-	r.HandleFunc("/demo2/{id:[0-9]+}", restful.DefaultHandler).Methods(http.MethodGet, http.MethodPut)
+	r.HandleFunc("/demo1/{method:[a-z]+}/{name:[0-9a-zA-Z_-]+}", restful.DefaultHandler)
+	r.HandleFunc("/demo2/{id:[0-9]+}", restful.DefaultHandler)
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir(app.Dir.Assets))))
 	r.NotFoundHandler = http.HandlerFunc(restful.NotFoundHandler)
 	// router group
