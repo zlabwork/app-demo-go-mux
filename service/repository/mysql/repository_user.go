@@ -6,6 +6,15 @@ import (
 	"database/sql"
 )
 
+func NewUserRepository() (*UserRepository, error) {
+
+	h, err := getHandle()
+	if err != nil {
+		return nil, err
+	}
+	return &UserRepository{Conn: h.Conn}, nil
+}
+
 type UserRepository struct {
 	Conn *sql.DB
 }
