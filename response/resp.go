@@ -1,56 +1,49 @@
 package response
 
 import (
+	"app"
 	"app/msg"
+	"context"
 	"encoding/json"
 	"net/http"
 )
 
-type JsonCode struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-}
-
 type JsonData struct {
 	Code    int         `json:"code"`
 	Message string      `json:"message"`
-	Data    interface{} `json:"data"`
+	Data    interface{} `json:"data,omitempty"`
+	TraceId interface{} `json:"trace_id,omitempty"`
 }
 
-func Raw(w http.ResponseWriter, data interface{}) {
+func Raw(ctx context.Context, w http.ResponseWriter, data *JsonData) {
 
 	w.Header().Set("Content-Type", "application/json")
+	data.TraceId = ctx.Value(app.TraceKey)
 	bs, _ := json.Marshal(data)
 	w.Write(bs)
 }
 
-func Code(w http.ResponseWriter, code int) {
+func Code(ctx context.Context, w http.ResponseWriter, code int) {
 
-	w.Header().Set("Content-Type", "application/json")
-	bs, _ := json.Marshal(JsonCode{
+	Raw(ctx, w, &JsonData{
 		Code:    code,
 		Message: msg.Text(code),
 	})
-	w.Write(bs)
 }
 
-func Message(w http.ResponseWriter, code int, message string) {
+func Message(ctx context.Context, w http.ResponseWriter, code int, message string) {
 
-	w.Header().Set("Content-Type", "application/json")
-	bs, _ := json.Marshal(JsonCode{
+	Raw(ctx, w, &JsonData{
 		Code:    code,
 		Message: message,
 	})
-	w.Write(bs)
 }
 
-func Data(w http.ResponseWriter, code int, data interface{}) {
+func Data(ctx context.Context, w http.ResponseWriter, code int, data interface{}) {
 
-	w.Header().Set("Content-Type", "application/json")
-	bs, _ := json.Marshal(JsonData{
+	Raw(ctx, w, &JsonData{
 		Code:    code,
 		Message: msg.Text(code),
 		Data:    data,
 	})
-	w.Write(bs)
 }

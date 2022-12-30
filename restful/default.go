@@ -9,9 +9,5 @@ import (
 
 func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 
-	response.Raw(w, response.JsonData{
-		Code:    msg.OK,
-		Message: msg.Text(msg.OK),
-		Data:    app.VersionName + "@" + app.VersionNumber,
-	})
+	response.Data(r.Context(), w, msg.OK, app.VersionName+"@"+app.VersionNumber)
 }

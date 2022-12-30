@@ -36,14 +36,14 @@ func SignatureMiddleware(next http.Handler) http.Handler {
 		// 1. Authorization
 		auth, err := parseAuthorization(r)
 		if err != nil {
-			response.Message(w, msg.ErrAccess, err.Error())
+			response.Message(r.Context(), w, msg.ErrAccess, err.Error())
 			return
 		}
 
 		// 2. Check Authorization format & Check date time
 		date, ok := auth["Date"]
 		if !ok || checkDatetime(date) != nil {
-			response.Data(w, msg.ErrTimeout, struct {
+			response.Data(r.Context(), w, msg.ErrTimeout, struct {
 				Error      string `json:"error"`
 				ServerDate string `json:"server_date"`
 			}{ServerDate: time.Now().UTC().Format(dateFormat), Error: "request Date timeout"})
@@ -51,17 +51,17 @@ func SignatureMiddleware(next http.Handler) http.Handler {
 		}
 		nonce, ok := auth["Nonce"]
 		if !ok {
-			response.Message(w, msg.ErrAccess, "missing Authorization Nonce")
+			response.Message(r.Context(), w, msg.ErrAccess, "missing Authorization Nonce")
 			return
 		}
 		sign, ok := auth["Signature"]
 		if !ok {
-			response.Message(w, msg.ErrAccess, "missing Authorization Signature")
+			response.Message(r.Context(), w, msg.ErrAccess, "missing Authorization Signature")
 			return
 		}
 		aki, ok := auth["Credential"]
 		if !ok {
-			response.Message(w, msg.ErrAccess, "missing Authorization Credential")
+			response.Message(r.Context(), w, msg.ErrAccess, "missing Authorization Credential")
 			return
 		}
 		// FIXME: get keySecret
@@ -70,7 +70,7 @@ func SignatureMiddleware(next http.Handler) http.Handler {
 		// 3. SignedBody
 		signedBody, err := createSignedBody(date, nonce, r)
 		if err != nil {
-			response.Message(w, msg.ErrSignature, err.Error())
+			response.Message(r.Context(), w, msg.ErrSignature, err.Error())
 			return
 		}
 
@@ -81,7 +81,7 @@ func SignatureMiddleware(next http.Handler) http.Handler {
 
 		// 5. Check
 		if signature != sign {
-			response.Data(w, msg.ErrSignature, struct {
+			response.Data(r.Context(), w, msg.ErrSignature, struct {
 				Error      string `json:"error"`
 				SignedBody string `json:"signed_body"`
 				Refer      string `json:"refer"`

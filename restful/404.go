@@ -8,5 +8,5 @@ import (
 
 func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
 
-	response.Code(w, msg.ErrNotFound)
+	response.Code(r.Context(), w, msg.ErrNotFound)
 }
