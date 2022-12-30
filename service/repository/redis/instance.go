@@ -1,11 +1,21 @@
-package cache
+package redis
 
 import (
+	"fmt"
 	"github.com/go-redis/redis/v8"
+	"os"
 )
 
 type handle struct {
 	Conn *redis.Client
+}
+
+func getHandle() (*handle, error) {
+	host := os.Getenv("REDIS_HOST")
+	port := os.Getenv("REDIS_PORT")
+	name := "1"
+	dsn := fmt.Sprintf("redis://%s:%s/%s", host, port, name)
+	return ConnectRedis(dsn)
 }
 
 // ConnectRedis
