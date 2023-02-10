@@ -1,10 +1,11 @@
 package app
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 const (
-	VersionName = "app"
-
 	VersionNumber = "v0.0.1"
 
 	Website = "https://zlab.dev"
@@ -26,5 +27,5 @@ ____________________________________O/_______
 )
 
 func Banner(message string) {
-	fmt.Printf(banner, VersionName, VersionNumber, Website, message)
+	fmt.Printf(banner, os.Getenv("APP_NAME"), VersionNumber, Website, message)
 }

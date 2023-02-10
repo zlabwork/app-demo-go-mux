@@ -2,6 +2,7 @@ package main
 
 import (
 	"app"
+	"app/libs/utils"
 	"app/middleware"
 	"app/restful"
 	"context"
@@ -65,7 +66,11 @@ func main() {
 			log.Println(err)
 		}
 	}()
-	app.Banner("Listening On :" + os.Getenv("APP_PORT"))
+	ips, _ := utils.LocalIPv4s()
+	output := `
+http://localhost:%s
+http://%s:%s`
+	app.Banner(fmt.Sprintf(output, os.Getenv("APP_PORT"), ips[0], os.Getenv("APP_PORT")))
 	log.Println("service is started")
 
 	c := make(chan os.Signal, 1)
