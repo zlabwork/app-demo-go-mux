@@ -26,8 +26,17 @@ func usage() {
 func router() *mux.Router {
 
 	r := mux.NewRouter().StrictSlash(true)
+
+	// Logs
 	r.Use(middleware.LoggingMiddleware)
-	// r.Use(middleware.SignatureMiddleware)
+
+	// Guard
+	if os.Getenv("AUTH_GUARD") == "token" {
+		r.Use(middleware.AuthenticateMiddleware)
+	} else if os.Getenv("AUTH_GUARD") == "sign" {
+		r.Use(middleware.SignatureMiddleware)
+	}
+
 	r.HandleFunc("/", restful.DefaultHandler)
 	r.HandleFunc("/demo1/{method:[a-z]+}/{name:[0-9a-zA-Z_-]+}", restful.DefaultHandler)
 	r.HandleFunc("/demo2/{id:[0-9]+}", restful.DefaultHandler)
