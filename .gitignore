@@ -42,6 +42,6 @@ go.sum
 Thumbs.db
 
 ### Project ###
-configs/
+config/
 bin/
 *.log

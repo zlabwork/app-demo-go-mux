@@ -20,7 +20,7 @@ type directory struct {
 
 func (d *directory) SetRoot(root string) {
 	d.Root = root
-	d.Config = root + "configs/"
+	d.Config = root + "config/"
 	d.Data = root + "data/"
 	d.Assets = root + "assets/"
 }
