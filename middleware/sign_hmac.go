@@ -28,9 +28,12 @@ func SignatureMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		// ignore
-		if strings.HasPrefix(r.RequestURI, "/assets/") {
-			next.ServeHTTP(w, r)
-			return
+		prefix := []string{"/keys", "/token", "/assets"}
+		for _, p := range prefix {
+			if strings.HasPrefix(r.RequestURI, p) {
+				next.ServeHTTP(w, r)
+				return
+			}
 		}
 
 		// 1. Authorization
