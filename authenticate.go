@@ -5,10 +5,6 @@ import (
 	"time"
 )
 
-const (
-	AuthKey = "_auth_key"
-)
-
 type Token struct {
 	UserId       string    `json:"user_id"`
 	AccessToken  string    `json:"access_token"`
