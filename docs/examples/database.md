@@ -96,7 +96,7 @@ go get gorm.io/driver/mysql
 ```
 
 ```go
-package mysql
+package orm
 
 import (
 	"fmt"

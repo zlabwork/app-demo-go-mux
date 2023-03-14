@@ -10,7 +10,7 @@ const (
 
 	Website = "https://zlab.dev"
 
-	// http://patorjk.com/software/taag/#p=display&h=0&f=Small%20Slant&t=RPC
+	// http://patorjk.com/software/taag/#p=display&h=0&f=Small%20Slant&t=ZLAB
 	banner = `
   ____   __    ___    ___
  /_  /  / /   / _ |  / _ )

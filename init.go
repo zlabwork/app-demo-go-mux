@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"os"
+	"os/user"
+	"strings"
 	"time"
 )
 
@@ -20,9 +22,26 @@ type directory struct {
 
 func (d *directory) SetRoot(root string) {
 	d.Root = root
-	d.Config = root + "config/"
-	d.Data = root + "data/"
-	d.Assets = root + "assets/"
+	d.Config = root + "config" + string(os.PathSeparator)
+	d.Assets = root + "assets" + string(os.PathSeparator)
+
+	dataPath := os.Getenv("APP_DATA")
+	if dataPath != "" {
+		if strings.HasPrefix(dataPath, string(os.PathSeparator)) {
+			d.Data = strings.TrimRight(dataPath, string(os.PathSeparator)) + string(os.PathSeparator)
+		} else if strings.HasPrefix(dataPath, ".") {
+			d.Data = root + strings.Trim(strings.Trim(dataPath, "."), string(os.PathSeparator)) + string(os.PathSeparator)
+		} else {
+			d.Data = root + strings.TrimRight(dataPath, string(os.PathSeparator)) + string(os.PathSeparator)
+		}
+	} else {
+		u, err := user.Current()
+		if err != nil {
+			log.Fatal(err)
+		}
+		d.Data = u.HomeDir + string(os.PathSeparator) + os.Getenv("APP_NAME") + string(os.PathSeparator)
+	}
+	os.MkdirAll(d.Data, 0755)
 }
 
 func init() {
