@@ -1,3 +1,8 @@
+## Warning
+This repository has been archived  
+Use [Echo](https://echo.labstack.com/) or [Gin](https://gin-gonic.com/) instead
+
+
 ## Best Practices
 ```shell
 # Use `export` instead of godotenv
